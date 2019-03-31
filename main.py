@@ -1,8 +1,8 @@
 import tweepy, os, random, time
 from bot import api
 
-PostHour=14
-PostMinute=00
+PostHour=15
+PostMinute=45
 IDontKnowHowToDoThisReally=True
 
 def isTheTimeRight():
