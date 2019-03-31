@@ -1,10 +1,9 @@
 import tweepy, os, random, time
 from bot import api
-clear = lambda: os.system('cls')
 
 PostHour=14
 PostMinute=00
-IDontKnowHowToDoThisReally=1
+IDontKnowHowToDoThisReally=True
 
 def isTheTimeRight():
     czas=time.localtime()
@@ -21,15 +20,7 @@ def tweet_image():
     api.update_with_media(imgPath)
     os.remove(imgPath)
 
-while(IDontKnowHowToDoThisReally>0):
-    czas=time.localtime()
-    hour=czas[3]
-    minute=czas[4]
-    print("Time: "+ str(hour) + ":" + str(minute))
-    print("Time of the post: " + str(PostHour) + ":" + str(PostMinute))
-    time.sleep(60)
-    clear()
-    
+while(IDontKnowHowToDoThisReally):
     if(isTheTimeRight()):
         print("Sending an image...")
         tweet_image()
