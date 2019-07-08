@@ -1,2 +1,2 @@
-worker: python main.py
-web: python server.py
+worker: python script.py
+worker: python bot_setup.py
