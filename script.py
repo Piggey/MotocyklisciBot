@@ -1,9 +1,7 @@
 import tweepy, os, random, time, requests, smtplib
 from bot_setup import api
-from apscheduler.schedulers.blocking import BlockingScheduler
 from dotenv import load_dotenv
 load_dotenv()
-sched = BlockingScheduler()
 
 def select_image():
     img_url = random.choice(images)
@@ -19,6 +17,7 @@ def tweet_image():
     try:
         api.update_with_media("image.jpg")
         print("Image sent successfully!")
+        os.remove("image.jpg")
     except:
         print("Uploading an image failed.")
 def send_mail():
@@ -37,18 +36,23 @@ def send_mail():
     print("Email sent!")
     server.quit()
 
+#loading the images from the images.txt file
 try:
     images = open("images.txt",'r').read().split('\n')
-    print("Images saved successfully.")
+    print("Images loaded successfully.")
+    num_of_imgs = len(images)
+    print(str(num_of_imgs) + " images loaded.")
 except:
-    print("Saving images failed.")
+    print("Loading images failed.")
 
-@sched.scheduled_job('cron', hour=14)
-def scheduled_job():
-    select_image()
+
+#loop executing itself everyday at the time of the launch of the script
+while(True):
+    if(num_of_imgs == 0):
+        send_mail()
+
     tweet_image()
     print("Image sent!")
     num_of_imgs = len(images)
-    if(num_of_imgs == 0):
-        send_mail()
-sched.start()
+    print("Images left: " + str(num_of_imgs))
+    time.sleep(86400)
