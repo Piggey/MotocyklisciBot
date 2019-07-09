@@ -14,4 +14,4 @@ try:
     api = tweepy.API(auth)
     print("API authorization successful.")
 except:
-    print("API authorization process failed.")
+    print("[ERR] API authorization process failed.")

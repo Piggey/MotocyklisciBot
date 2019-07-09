@@ -5,21 +5,24 @@ load_dotenv()
 
 def select_image():
     img_url = random.choice(images)
+    images.remove(img_url)
     print("selected image " + img_url)
-    image = open("image.jpg",'wb')
+    filename = "temp.jpg"
     request = requests.get(img_url, stream=True)
     if request.status_code == 200:
+        with open(filename, 'wb') as image:
             for chunk in request:
                 image.write(chunk)
-    images.remove(img_url)
+
 def tweet_image():
-    select_image()
     try:
-        api.update_with_media("image.jpg")
+        select_image()
+        api.update_with_media("temp.jpg")
         print("Image sent successfully!")
-        os.remove("image.jpg")
+        os.remove("temp.jpg")
     except:
-        print("Uploading an image failed.")
+        print("[ERR] Uploading an image failed.")
+
 def send_mail():
     mail = os.getenv("EMAIL_LOGIN")
     passw = os.getenv("EMAIL_PASSWORD")
@@ -41,9 +44,9 @@ try:
     images = open("images.txt",'r').read().split('\n')
     print("Images loaded successfully.")
     num_of_imgs = len(images)
-    print(str(num_of_imgs) + " images loaded.")
+    print("Images loaded: " + str(num_of_imgs))
 except:
-    print("Loading images failed.")
+    print("[ERR] Loading images failed.")
 
 
 #loop executing itself everyday at the time of the launch of the script
@@ -52,7 +55,6 @@ while(True):
         send_mail()
 
     tweet_image()
-    print("Image sent!")
     num_of_imgs = len(images)
     print("Images left: " + str(num_of_imgs))
     time.sleep(86400)
