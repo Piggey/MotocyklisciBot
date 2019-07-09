@@ -17,7 +17,8 @@ def select_image():
 def tweet_image():
     try:
         select_image()
-        api.update_with_media("temp.jpg")
+        #api.update_with_media("temp.jpg")
+        api.update_status("See you in 24 hours!")
         print("Image sent successfully!")
         os.remove("temp.jpg")
     except:
