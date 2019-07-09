@@ -15,7 +15,7 @@ try:
     auth.set_access_token(access_token, access_token_secret)
 
     api = tweepy.API(auth)
-    print("API authorization successful.")
+    print("API authorization: success!")
 
-except Exception:
-        print(Exception)
+except:
+    print("API authorization: FAILURE!")

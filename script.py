@@ -1,25 +1,30 @@
-import tweepy, os, random, time, requests, smtplib, sys
+import tweepy, os, random, time, requests, smtplib
 from bot_setup import api, mail, passw
+
+
+INTERVAL = 3600 * 24 #every 24 hours
 
 def select_image_from_url():
     img_url = random.choice(images)
     images.remove(img_url)
-    print("Selected image " + img_url)
+    print("Selected image: " + img_url)
     filename = "temp.jpg"
     request = requests.get(img_url, stream=True)
     if request.status_code == 200:
         with open(filename, 'wb') as image:
             for chunk in request:
                 image.write(chunk)
-    file_path = "motocykle-bot/" + filename
-    return file_path
+
+    return filename
 
 def tweet_image():
     try:
-        api.update_with_media(select_image_from_url())
-        print("Image sent successfully!")
+        filename = select_image_from_url()
+        img_id = api.media_upload(filename).media_id_string
+        api.update_with_media(filename, media_id=img_id)
+        print("Tweeting the image: success!")
     except:
-        print("Failed to send the image to Twitter.")
+        print("Tweeting the image: FAILURE!")
 
 def send_mail():
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -38,11 +43,11 @@ def send_mail():
 #loading the images from the images.txt file
 try:
     images = open("images.txt",'r').read().split('\n')
-    print("Images loaded successfully.")
+    print("Loading the images: success!")
     num_of_imgs = len(images)
     print("Images loaded: " + str(num_of_imgs) + "\n")
 except:
-    print("Failed to load the images.")
+    print("Loading the images: FAILURE!")
 
 #loop executing itself everyday at the time of the launch of the script
 while(True):
@@ -51,5 +56,5 @@ while(True):
 
     tweet_image()
     num_of_imgs = len(images)
-    print("Images left: " + str(num_of_imgs))
-    time.sleep(86400)
+    print("Images left: " + str(num_of_imgs) + "\n")
+    time.sleep(INTERVAL)
