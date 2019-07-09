@@ -20,8 +20,10 @@ def select_image_from_url():
 def tweet_image():
     try:
         filename = select_image_from_url()
+        print(api.media_upload(filename))
         img_id = api.media_upload(filename).media_id_string
         api.update_with_media(filename, media_id=img_id)
+        os.remove(filename)
         print("Tweeting the image: success!")
     except:
         print("Tweeting the image: FAILURE!")
