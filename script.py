@@ -17,8 +17,7 @@ def select_image():
 def tweet_image():
     try:
         select_image()
-        #api.update_with_media("temp.jpg")
-        api.update_status("See you in 24 hours!")
+        api.update_with_media("temp.jpg")
         print("Image sent successfully!")
         os.remove("temp.jpg")
     except:
@@ -55,7 +54,8 @@ while(True):
     if(num_of_imgs == 0):
         send_mail()
 
-    tweet_image()
-    num_of_imgs = len(images)
-    print("Images left: " + str(num_of_imgs))
+    #tweet_image()
+    #num_of_imgs = len(images)
+    #print("Images left: " + str(num_of_imgs))
+    api.update_status("See you in 24 hours!")
     time.sleep(86400)
