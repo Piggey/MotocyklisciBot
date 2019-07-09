@@ -55,6 +55,7 @@ except:
 while(True):
     if(num_of_imgs == 0):
         send_mail()
+        break
 
     tweet_image()
     num_of_imgs = len(images)
