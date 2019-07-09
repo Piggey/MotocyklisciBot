@@ -11,19 +11,12 @@ def select_image_from_url():
         with open(filename, 'wb') as image:
             for chunk in request:
                 image.write(chunk)
-    return filename
-
-def select_image_from_file():
-    files = os.listdir("Memes/")
-    img = random.choice(files)
-    print("Selected file: " + img)
-    img_path = "Memes/" + img
-    return img_path
+    file_path = "motocykle-bot/" + filename
+    return file_path
 
 def tweet_image():
     try:
-        api.update_with_media(select_image_from_file())
-        #os.remove("temp.jpg")
+        api.update_with_media(select_image_from_url())
         print("Image sent successfully!")
     except:
         print("Failed to send the image to Twitter.")
@@ -42,23 +35,21 @@ def send_mail():
     print("Email sent!")
     server.quit()
 
-# #loading the images from the images.txt file
-# try:
-#     images = open("images.txt",'r').read().split('\n')
-#     print("Images loaded successfully.")
-#     num_of_imgs = len(images)
-#     print("Images loaded: " + str(num_of_imgs) + "\n")
-# except:
-#     print("Failed to load the images.")
+#loading the images from the images.txt file
+try:
+    images = open("images.txt",'r').read().split('\n')
+    print("Images loaded successfully.")
+    num_of_imgs = len(images)
+    print("Images loaded: " + str(num_of_imgs) + "\n")
+except:
+    print("Failed to load the images.")
 
-# #loop executing itself everyday at the time of the launch of the script
-# while(True):
-#     if(num_of_imgs == 0):
-#         send_mail()
+#loop executing itself everyday at the time of the launch of the script
+while(True):
+    if(num_of_imgs == 0):
+        send_mail()
 
-#     tweet_image()
-#     num_of_imgs = len(images)
-#     print("Images left: " + str(num_of_imgs))
-#     time.sleep(86400)
-
-tweet_image()
+    tweet_image()
+    num_of_imgs = len(images)
+    print("Images left: " + str(num_of_imgs))
+    time.sleep(86400)
